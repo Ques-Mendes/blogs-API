@@ -1,7 +1,7 @@
 'use strict';
 
-const { TIMESTAMP } = require("mysql2/lib/constants/types");
-const Users = require("./Users");
+// const { TIMESTAMP } = require("mysql2/lib/constants/types");
+
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -23,8 +23,8 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: Users,
-          id: 'id'
+          model: User,
+          key: 'id'
         }
       },
       published: { type: Sequelize.DATE },
