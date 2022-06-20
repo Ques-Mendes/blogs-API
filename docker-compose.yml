@@ -32,6 +32,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
 
-networks:
-  default:
-    name: blogs_api_net
+# networks:
+#   default:
+#     name: blogs_api_net
