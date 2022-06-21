@@ -17,11 +17,11 @@ const BlogPostSchema = (sequelize, DataTypes) => {
     },
     published: {
       type: DataTypes.DATE,
-      defaultValue: Sequelize.fn('now'),      
+      defaultValue: DataTypes.NOW      
     },
     updated: {
       type: DataTypes.DATE,
-      defaultValue: Sequelize.fn('now'),
+      defaultValue: DataTypes.NOW
     }
   },
   {
