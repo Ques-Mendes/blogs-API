@@ -1,0 +1,21 @@
+const { User } = require('../database/models');
+const { generateJWTToken } = require('../helpers/JWTToken');
+const statusErrorHandler = require('../helpers/statusErrorHandler.js');
+const { BAD_REQUEST } = require('../helpers/statusHTTP');
+
+const getUser = async ({ email, password }) => {
+  const user = await User.findOne({
+    attributes: ['displayName', 'id', 'email', 'password'],
+    where: { email, password },
+  });
+  console.log('user', user);
+  if (!user) {
+    statusErrorHandler({ message: 'Invalid fields', status: BAD_REQUEST });
+  }
+  const token = generateJWTToken(user.dataValues);
+  return token;
+};
+
+module.exports = {
+  getUser,
+};

@@ -8,7 +8,7 @@ const CategorySchema = (sequelize, DataTypes) => {
     },
     name: {
       allowNull: false,
-      name: DataTypes.STRING(255),
+      type: DataTypes.STRING(255),
     }
   }, {
     timestamp: false,
