@@ -16,10 +16,12 @@ const BlogPostSchema = (sequelize, DataTypes) => {
       foreignKey: true,
     },
     published: {
-      type: DataTypes.DATE,      
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.fn('now'),      
     },
     updated: {
       type: DataTypes.DATE,
+      defaultValue: Sequelize.fn('now'),
     }
   },
   {
@@ -30,7 +32,7 @@ const BlogPostSchema = (sequelize, DataTypes) => {
   BlogPostTable.associate = (models) => {
     BlogPostTable.belongsTo(models.User, {
       foreignKey: 'userId',
-      as: 'user'
+      as: 'users'
     });
   };
   return BlogPostTable;
