@@ -5,4 +5,5 @@ module.exports = {
   UNAUTHORIZED: 401,
   INTERNAL_ERROR: 500,
   CONFLICT: 409,
+  NOT_FOUND: 404,
 };

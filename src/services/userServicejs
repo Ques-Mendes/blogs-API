@@ -1,14 +1,13 @@
 const { User } = require('../database/models');
 const { generateJWTToken } = require('../helpers/JWTToken');
 const statusErrorHandler = require('../helpers/statusErrorHandler.js');
-const { BAD_REQUEST, CONFLICT } = require('../helpers/statusHTTP');
+const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../helpers/statusHTTP');
 
 const getUser = async ({ email, password }) => {
   const user = await User.findOne({
     attributes: ['displayName', 'id', 'email', 'password'],
     where: { email, password },
   });
-  console.log('user', user);
   if (!user) {
     statusErrorHandler({ message: 'Invalid fields', status: BAD_REQUEST });
   }
@@ -31,8 +30,19 @@ const getAllUsers = async () => {
   return users;
 };
 
+const getUserById = async (id) => {
+  const user = await User.findOne({ 
+    where: { id },
+    attributes: ['id', 'displayName', 'email', 'image'] });
+  if (!user) {
+    statusErrorHandler({ message: 'User does not exist', status: NOT_FOUND });
+  }
+  return user;
+};
+
 module.exports = {
   getUser,
   createUser,
   getAllUsers,
+  getUserById,
 };
