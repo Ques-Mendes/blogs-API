@@ -25,7 +25,14 @@ const createUser = async ({ displayName, email, password, image }) => {
     statusErrorHandler({ message: 'User already registered', status: CONFLICT });
 };
 
+const getAllUsers = async () => {
+  const users = await User.findAll({
+    attributes: ['id', 'displayName', 'email', 'image'] });
+  return users;
+};
+
 module.exports = {
   getUser,
   createUser,
+  getAllUsers,
 };
