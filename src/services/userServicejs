@@ -1,7 +1,7 @@
 const { User } = require('../database/models');
 const { generateJWTToken } = require('../helpers/JWTToken');
 const statusErrorHandler = require('../helpers/statusErrorHandler.js');
-const { BAD_REQUEST } = require('../helpers/statusHTTP');
+const { BAD_REQUEST, CONFLICT } = require('../helpers/statusHTTP');
 
 const getUser = async ({ email, password }) => {
   const user = await User.findOne({
@@ -16,6 +16,16 @@ const getUser = async ({ email, password }) => {
   return token;
 };
 
+const createUser = async ({ displayName, email, password, image }) => {
+  const userEmail = await User.findOne({ where: { email } });
+  if (!userEmail) {
+    const newUser = await User.create({ displayName, email, password, image });
+    return generateJWTToken(newUser.dataValues);
+  }
+    statusErrorHandler({ message: 'User already registered', status: CONFLICT });
+};
+
 module.exports = {
   getUser,
+  createUser,
 };
