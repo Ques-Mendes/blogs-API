@@ -25,7 +25,7 @@ const BlogPostSchema = (sequelize, DataTypes) => {
     }
   },
   {
-    timestamp: false,
+    timestamps: false,
     tableName: 'BlogPosts'
   });
 

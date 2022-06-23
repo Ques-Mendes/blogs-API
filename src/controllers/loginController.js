@@ -1,4 +1,4 @@
-const userService = require('../services/userServicejs');
+const userService = require('../services/userService.js');
 const { STATUS_OK } = require('../helpers/statusHTTP');
 
 const login = async (req, res) => {

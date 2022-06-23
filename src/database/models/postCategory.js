@@ -13,7 +13,7 @@ const PostCategorySchema = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
     }
   }, {
-    timestamp: false,
+    timestamps: false,
   });
 
   PostCategoryTable.associate = (models) => {

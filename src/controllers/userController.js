@@ -1,4 +1,4 @@
-const userService = require('../services/userServicejs');
+const userService = require('../services/userService.js');
 const { CREATED, STATUS_OK } = require('../helpers/statusHTTP.js');
 
 const createUser = async (req, res) => {
