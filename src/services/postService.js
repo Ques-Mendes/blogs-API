@@ -37,7 +37,28 @@ const getAllPosts = async () => {
   return posts;  
 };
 
+const getPostById = async (id) => {
+  const post = await BlogPost.findOne({
+    where: { id },
+    include: [
+      { model: User,
+        as: 'user',
+        attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category,
+        as: 'categories',
+        attributes: ['id', 'name'],
+        through: { attributes: [] },
+      },
+    ],
+  });
+  if (!post) {
+    statusErrorHandler({ message: '"categoryIds" not found', status: BAD_REQUEST });  
+  }
+  return post;
+};
+
 module.exports = {
   createPost,
   getAllPosts,
+  getPostById,
 };
