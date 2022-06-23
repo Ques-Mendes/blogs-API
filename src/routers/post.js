@@ -6,5 +6,6 @@ const postInfoValidation = require('../middlewares/postInfoValidation');
 const postRouter = express.Router();
 
 postRouter.post('/', authMiddleware, postInfoValidation, postController.createPost);
+postRouter.get('/', authMiddleware, postController.getAllPosts);
 
 module.exports = postRouter;

@@ -1,5 +1,5 @@
 const postService = require('../services/postService');
-const { CREATED } = require('../helpers/statusHTTP');
+const { CREATED, STATUS_OK } = require('../helpers/statusHTTP');
 
 const createPost = async (req, res) => {
   const { id: userId } = res.locals.payload; 
@@ -8,6 +8,12 @@ const createPost = async (req, res) => {
   res.status(CREATED).json(newPost);
 };
 
+const getAllPosts = async (_req, res) => {
+  const posts = await postService.getAllPosts();
+  res.status(STATUS_OK).json(posts);
+};
+
 module.exports = {
   createPost,
+  getAllPosts,
 };

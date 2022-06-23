@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { BlogPost, PostCategory } = require('../database/models');
+const { BlogPost, PostCategory, User, Category } = require('../database/models');
 const config = require('../database/config/config');
 const statusErrorHandler = require('../helpers/statusErrorHandler');
 const { BAD_REQUEST } = require('../helpers/statusHTTP');
@@ -16,15 +16,28 @@ const createPost = async ({ userId, title, content, categoryIds }) => {
     await t.commit();
     return newPost;
   } catch (e) {  
-    console.log('e', e);
     await t.rollback();  
     statusErrorHandler({ message: '"categoryIds" not found', status: BAD_REQUEST });    
   }
 };
 
-module.exports = {
-  createPost,
+const getAllPosts = async () => {
+  const posts = await BlogPost.findAll({
+    include: [
+      { model: User,
+        as: 'user',
+        attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category,
+        as: 'categories',
+        attributes: ['id', 'name'],
+        through: { attributes: [] },
+      },
+    ],
+  });
+  return posts;  
 };
 
-// newPost.id, categoryIds
-// 1, 1
+module.exports = {
+  createPost,
+  getAllPosts,
+};
