@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const { BlogPost, PostCategory, User, Category } = require('../database/models');
 const config = require('../database/config/config');
 const statusErrorHandler = require('../helpers/statusErrorHandler');
-const { BAD_REQUEST } = require('../helpers/statusHTTP');
+const { BAD_REQUEST, UNAUTHORIZED, NOT_FOUND } = require('../helpers/statusHTTP');
 
 const sequelize = new Sequelize(config.development);
 
@@ -52,13 +52,26 @@ const getPostById = async (id) => {
     ],
   });
   if (!post) {
-    statusErrorHandler({ message: '"categoryIds" not found', status: BAD_REQUEST });  
+    statusErrorHandler({ message: 'Post does not exist', status: NOT_FOUND });  
   }
   return post;
+};
+
+const updatePost = async (id, userId, { title, content }) => {
+  const selectedPost = await BlogPost.findOne({ where: { id } });
+  console.log('TEST', title, content); // Console
+  if (selectedPost.userId === userId) {
+   const test = await BlogPost.update({ title, content }, { where: { id } });
+    console.log('test', test);
+    const updatedPost = await getPostById(id);    
+    return updatedPost;
+  }
+  statusErrorHandler({ message: 'Unauthorized user', status: UNAUTHORIZED });
 };
 
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  updatePost,
 };
