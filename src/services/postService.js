@@ -59,12 +59,22 @@ const getPostById = async (id) => {
 
 const updatePost = async (id, userId, { title, content }) => {
   const selectedPost = await BlogPost.findOne({ where: { id } });
-  console.log('TEST', title, content); // Console
   if (selectedPost.userId === userId) {
-   const test = await BlogPost.update({ title, content }, { where: { id } });
-    console.log('test', test);
+   await BlogPost.update({ title, content }, { where: { id } });
     const updatedPost = await getPostById(id);    
     return updatedPost;
+  }
+  statusErrorHandler({ message: 'Unauthorized user', status: UNAUTHORIZED });
+};
+
+const deletePost = async (postId, userId) => {
+  const selectedPost = await BlogPost.findOne({ where: { id: postId } });
+  if (!selectedPost) {
+    statusErrorHandler({ message: 'Post does not exist', status: NOT_FOUND });
+  }
+  if (selectedPost.userId === userId) {
+    const deletedPost = await BlogPost.destroy({ where: { id: postId } });
+    return deletedPost;
   }
   statusErrorHandler({ message: 'Unauthorized user', status: UNAUTHORIZED });
 };
@@ -74,4 +84,5 @@ module.exports = {
   getAllPosts,
   getPostById,
   updatePost,
+  deletePost,
 };

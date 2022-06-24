@@ -6,4 +6,5 @@ module.exports = {
   INTERNAL_ERROR: 500,
   CONFLICT: 409,
   NOT_FOUND: 404,
+  NO_CONTENT: 204,
 };

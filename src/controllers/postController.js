@@ -1,5 +1,5 @@
 const postService = require('../services/postService');
-const { CREATED, STATUS_OK } = require('../helpers/statusHTTP');
+const { CREATED, STATUS_OK, NO_CONTENT } = require('../helpers/statusHTTP');
 
 const createPost = async (req, res) => {
   const { id: userId } = res.locals.payload; 
@@ -27,9 +27,17 @@ const updatePost = async (req, res) => {
   res.status(STATUS_OK).json(post);
 };
 
+const deletePost = async (req, res) => {
+  const { id: postId } = req.params;
+  const { id: userId } = res.locals.payload;
+  await postService.deletePost(postId, userId);
+  res.status(NO_CONTENT).end();
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   updatePost,
+  deletePost,
 };
