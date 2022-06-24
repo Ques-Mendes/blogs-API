@@ -1,5 +1,5 @@
 const userService = require('../services/userService.js');
-const { CREATED, STATUS_OK } = require('../helpers/statusHTTP.js');
+const { CREATED, STATUS_OK, NO_CONTENT } = require('../helpers/statusHTTP.js');
 
 const createUser = async (req, res) => {
   const { displayName, email, password, image } = req.body;
@@ -18,8 +18,15 @@ const getUserById = async (req, res) => {
   res.status(STATUS_OK).json(user);
 };
 
+const deleteMe = async (_req, res) => {
+  const { id } = res.locals.payload;
+  await userService.deleteMe(id);
+  res.status(NO_CONTENT).end();
+};
+
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
+  deleteMe,
 };

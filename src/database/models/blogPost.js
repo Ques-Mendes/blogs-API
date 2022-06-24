@@ -14,6 +14,8 @@ const BlogPostSchema = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       foreignKey: true,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     },
     published: {
       type: DataTypes.DATE,
