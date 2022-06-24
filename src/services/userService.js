@@ -1,7 +1,7 @@
 const { User } = require('../database/models');
 const { generateJWTToken } = require('../helpers/JWTToken');
 const statusErrorHandler = require('../helpers/statusErrorHandler.js');
-const { BAD_REQUEST, CONFLICT, NOT_FOUND, UNAUTHORIZED } = require('../helpers/statusHTTP');
+const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../helpers/statusHTTP');
 
 const getUser = async ({ email, password }) => {
   const user = await User.findOne({

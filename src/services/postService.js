@@ -4,6 +4,7 @@ const config = require('../database/config/config');
 const statusErrorHandler = require('../helpers/statusErrorHandler');
 const { BAD_REQUEST, UNAUTHORIZED, NOT_FOUND } = require('../helpers/statusHTTP');
 
+const { Op } = Sequelize;
 const sequelize = new Sequelize(config.development);
 
 const arrayIds = (postId, categoryIds) => categoryIds.map((categoryId) => ({ postId, categoryId }));
@@ -79,10 +80,33 @@ const deletePost = async (postId, userId) => {
   statusErrorHandler({ message: 'Unauthorized user', status: UNAUTHORIZED });
 };
 
+// https://stackoverflow.com/questions/20695062/sequelize-or-condition-object
+// https://stackoverflow.com/questions/53971268/node-sequelize-find-where-like-wildcard
+const getPostBySearch = async (q) => {
+  const query = `%${q}%`;
+  const posts = await BlogPost.findAll({
+    where: {
+      [Op.or]: [{ title: { [Op.like]: query } }, { content: { [Op.like]: query } }],
+    },
+    include: [
+      { model: User,
+       as: 'user',
+       attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category,
+      as: 'categories',
+      attributes: ['id', 'name'],
+      through: { attributes: [] },
+      },
+    ],
+  });
+  return posts;
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   updatePost,
   deletePost,
+  getPostBySearch,
 };
